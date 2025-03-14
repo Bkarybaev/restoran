@@ -1,11 +1,23 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/restoran
     username: postgres
     password: baiel123
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: update
+  servlet:
+      multipart:
+        enabled: true
+        max-file-size: 10MB
+        max-request-size: 20MB
+  jwt:
+    secret_key: baielkarybaevspringkey
+
 
 server:
-  port: 5454
+  port: 8082
+
+
+
