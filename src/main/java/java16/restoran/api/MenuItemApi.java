@@ -1,46 +1,19 @@
 package java16.restoran.api;
 
-//import java16.restoran.dto.MenuItemsRequest;
-//import java16.restoran.entity.MenuItem;
-//import java16.restoran.service.MenuItemService;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import java.io.IOException;
-//
-//@RestController
-//@RequiredArgsConstructor
-//@RequestMapping("/api/menu-item")
-//public class MenuItemApi {
-//    private final MenuItemService menuItemService;
-//
-//    @PostMapping("/saveMenuItem")
-//    public ResponseEntity<?> saveMenuItem(
-//            @RequestBody MenuItemsRequest menuItem) throws IOException {
-//       return menuItemService.save(menuItem);
-//    }
-//}
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java16.restoran.dto.MenuItemsRequest;
+import java16.restoran.entity.MenuItem;
 import java16.restoran.service.MenuItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.DataInput;
 import java.io.IOException;
 
 @RestController
@@ -48,22 +21,36 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class MenuItemApi {
     private final MenuItemService menuItemService;
-    @Operation(
-            summary = "Save menu item",
-            description = "Saves a menu item with an optional image file",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    content = @Content(
-                            mediaType = MediaType.MULTIPART_FORM_DATA_VALUE
-                    )
-            )
-    )
 
+
+    /// save menu-item
+        @Operation(
+               summary = "Save images",
+               description = "me save image in database",
+               requestBody = @RequestBody(
+                       content = @Content(
+                               mediaType = MediaType.MULTIPART_FORM_DATA_VALUE
+                       )
+               ))
     @PostMapping(value = "/saveMenuItem", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> saveMenuItem(
-            @RequestBody MenuItemsRequest menuItem,
-            @RequestPart(value = "file", required = false) @Parameter(description = "Image file") MultipartFile file) throws IOException {
+    public ResponseEntity<?> save(
+                @ModelAttribute MenuItemsRequest menuItems,
+                @RequestPart(value = "file", required = false)
+                @Parameter(description = "image file") MultipartFile file
+                )throws IOException{
+            System.err.println(menuItems);
+           return menuItemService.save(menuItems, file);
+        }
 
-        return menuItemService.save(menuItem, file);
-    }
+        /// get image
+        @Secured("CLIENT")
+        @GetMapping("/getMenuItem/{id}")
+        public ResponseEntity<MenuItem> getMenuItem(@PathVariable Long id) {
+            MenuItem menuItem = menuItemService.getMenuItemById(id);
+            return ResponseEntity.ok(menuItem);
+        }
+
+
+
 }
 

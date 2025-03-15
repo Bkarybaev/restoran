@@ -19,9 +19,13 @@ public class ImageServiceImpl implements ImageService {
     private final String uploadDir = "/Users/baiel/Documents/imagesRestauran/";
     @Override
     public String save(MultipartFile file) throws IOException {
+
+        //unig
         String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 
+        // put tuzup beret
         Path path = Paths.get(uploadDir + fileName);
+        // saktoo / sav
         Files.write(path, file.getBytes());
         return fileName;
     }

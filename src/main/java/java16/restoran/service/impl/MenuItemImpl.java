@@ -3,6 +3,7 @@ package java16.restoran.service.impl;
 import jakarta.transaction.Transactional;
 import java16.restoran.dto.MenuItemsRequest;
 import java16.restoran.entity.MenuItem;
+import java16.restoran.exceptions.NotFount;
 import java16.restoran.repo.MenuItemRepo;
 import java16.restoran.service.ImageService;
 import java16.restoran.service.MenuItemService;
@@ -23,9 +24,20 @@ public class MenuItemImpl implements MenuItemService {
     @Override
     public ResponseEntity<?> save(MenuItemsRequest menuItem, MultipartFile file) throws IOException {
        String fileName = imageService.save(file);
-        MenuItem menuItem1 = menuItem.newMenuItem();
-        menuItem1.setImage(fileName);
-        menuItemRepo.save(menuItem1);
-        return null;
+        MenuItem res = new MenuItem();
+        res.setName(menuItem.getName());
+        res.setDescription(menuItem.getDescription());
+        res.setPrice(menuItem.getPrice());
+        res.setIsVegetarian(menuItem.getIsVegetarian());
+        res.setImage(fileName);
+        MenuItem save = menuItemRepo.save(res);
+        System.err.println(save);
+        return ResponseEntity.ok(res);
+    }
+
+    @Override
+    public MenuItem getMenuItemById(Long id) {
+        return menuItemRepo.findById(id).orElseThrow(()
+                -> new NotFount("Menu item not found by id " + id));
     }
 }

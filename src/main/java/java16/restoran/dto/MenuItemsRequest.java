@@ -15,13 +15,6 @@ public class MenuItemsRequest {
 //    private Long categoryId;
 //    private Long subcategoryId;
 
-    public MenuItem newMenuItem(){
-        MenuItem menuItem = new MenuItem();
-        menuItem.setName(name);
-        menuItem.setDescription(description);
-        menuItem.setPrice(price);
-        menuItem.setIsVegetarian(isVegetarian);
-        return menuItem;
-    }
+
 
 }

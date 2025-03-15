@@ -9,4 +9,6 @@ import java.io.IOException;
 
 public interface MenuItemService {
     ResponseEntity<?> save(MenuItemsRequest menuItem, MultipartFile file) throws IOException;
+
+    MenuItem getMenuItemById(Long id);
 }

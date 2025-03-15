@@ -26,8 +26,6 @@ public class JwtService {
     public String createToken(User user) {
         // head
         JWTCreator.Builder builder = JWT.create();
-
-
         //peloat
         builder.withClaim("email",user.getEmail());
         builder.withClaim("id", user.getId());
@@ -47,7 +45,8 @@ public class JwtService {
         JWTVerifier build = JWT.require(Algorithm.HMAC256(SECRET_KEY)).build();
         DecodedJWT jwt = build.verify(token);
         String email =jwt.getClaim("email").asString();
-        return userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        return userRepo.findByEmail(email).orElseThrow(
+                () -> new RuntimeException("User not found"));
     }
 
 

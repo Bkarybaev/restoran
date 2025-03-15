@@ -31,7 +31,9 @@ public class SpringSecurity {
                 authorize
                         .requestMatchers(
                                 "/**",
-                                "/api/menu/saveMenuItem",
+//                                "/api/menu/saveMenuItem",
+                                "/api/auth/login",
+                                "/api/auth/register",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
