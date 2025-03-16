@@ -9,6 +9,7 @@ import java16.restoran.entity.User;
 import java16.restoran.enums.RoleUser;
 import java16.restoran.exceptions.NotFount;
 import java16.restoran.exceptions.PasswordTuuraEmes;
+import java16.restoran.exceptions.UserException;
 import java16.restoran.repo.UserRepo;
 import java16.restoran.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -54,10 +55,12 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+
+
     @Override
     public ResponseEntity<?> register(RegisterRequest registerRequest) {
         if (userRepo.findByEmail(registerRequest.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already in use");
+            throw new UserException("Email already in use");
         }
         User user = new User();
         user.setEmail(registerRequest.getEmail());

@@ -16,7 +16,7 @@ import java.util.UUID;
 @Transactional
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
-    private final String uploadDir = "/Users/baiel/Documents/imagesRestauran/";
+    public static final String uploadDir = "/Users/baiel/Documents/imagesRestauran/";
     @Override
     public String save(MultipartFile file) throws IOException {
 

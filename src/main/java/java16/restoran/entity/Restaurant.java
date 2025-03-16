@@ -29,9 +29,11 @@ public class Restaurant {
     private Integer service;
 
     //relationships
+    @ManyToMany(mappedBy = "restaurant")
+    private List<BidEmployees> bidEmployees = new ArrayList<>();
 
-    @OneToMany(mappedBy = "restaurant")
-    private List<User> users= new ArrayList<>();
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    private List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "restaurant")
     private List<MenuItem> menuItems= new ArrayList<>();

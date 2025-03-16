@@ -1,7 +1,7 @@
 package java16.restoran.service.impl;
 
 import jakarta.transaction.Transactional;
-import java16.restoran.dto.MenuItemsRequest;
+import java16.restoran.dto.request.MenuItemsRequest;
 import java16.restoran.entity.MenuItem;
 import java16.restoran.exceptions.NotFount;
 import java16.restoran.repo.MenuItemRepo;

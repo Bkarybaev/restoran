@@ -42,6 +42,8 @@ public class User implements UserDetails {
     @ManyToOne
     private Restaurant restaurant;
 
+
+
     @OneToMany(mappedBy = "chequeUser")
     private List<Cheque> chequeList = new ArrayList<>();
 
