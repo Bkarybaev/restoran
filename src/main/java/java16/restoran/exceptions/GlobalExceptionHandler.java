@@ -55,4 +55,14 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .build();
     }
+
+    @ExceptionHandler(NullPointerException.class)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ExceptionResponse handle(NullPointerException e) {
+        return ExceptionResponse.builder()
+                .message(e.getMessage())
+                .className(e.getClass().getSimpleName())
+                .status(HttpStatus.NO_CONTENT)
+                .build();
+    }
 }

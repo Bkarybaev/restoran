@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByEmail(String email) {
         return userRepo.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFount("User not found"));
     }
 
     @Override
@@ -84,6 +84,11 @@ public class UserServiceImpl implements UserService {
                         .role(save.getRole())
                         .build()
         );
+    }
+
+    @Override
+    public void save(User user) {
+        userRepo.save(user);
     }
 
     @PostConstruct

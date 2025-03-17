@@ -4,13 +4,16 @@ import jakarta.transaction.Transactional;
 import java16.restoran.dto.request.BidRequest;
 import java16.restoran.entity.BidEmployees;
 import java16.restoran.entity.Restaurant;
+import java16.restoran.entity.User;
 import java16.restoran.enums.RoleUser;
 import java16.restoran.exceptions.ExceptionAge;
 import java16.restoran.exceptions.NotFount;
 import java16.restoran.exceptions.NumberTuuraEmes;
 import java16.restoran.repo.BidRepo;
 import java16.restoran.repo.RestaurantRepo;
+import java16.restoran.repo.UserRepo;
 import java16.restoran.service.BidService;
+import java16.restoran.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,12 +21,22 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class BidServiceImpl implements BidService {
+    private final UserRepo userService;
+
     private final PasswordEncoder passwordEncoder;
     private final RestaurantRepo restaurantRepo;
     private final BidRepo bidRepo;
 
     @Override
     public String saveBid(BidRequest bidRequest, Long restaurantId) {
+
+        userService.findByEmail(bidRequest.getEmail())
+                .orElseThrow(
+                        () ->
+                                new NotFount("User not found with email: "
+                                        + bidRequest.getEmail() +
+                                        " algach kattaluu kerek bolot"));
+
         BidEmployees byEmail = bidRepo.findByEmail(bidRequest.getEmail()).orElse(null);
         if (byEmail != null) {
             throw new NotFount("User with email " + byEmail.getEmail() + " already exists");
@@ -60,7 +73,9 @@ public class BidServiceImpl implements BidService {
             }
             throw new NumberTuuraEmes("Experience is greater than " + r + " bolshe years");
         }
-        restaurantRepo.findRestaurantByException(restaurantId);
+        Restaurant restaurant = restaurantRepo.findRestaurantByException(restaurantId);
+        restaurant.getBidEmployees().add(bidEmployees);
+        bidEmployees.getRestaurant().add(restaurant);
         bidEmployees.setEmail(bidRequest.getEmail());
         bidEmployees.setPassword(passwordEncoder.encode(bidRequest.getPassword()));
         bidEmployees.setExperience(bidRequest.getExperience());
@@ -77,16 +92,21 @@ public class BidServiceImpl implements BidService {
     @Transactional
     public String addEmployee(Long employeeId, String add, Long restaurantId) {
         BidEmployees byIdBidEmployee = bidRepo.findByIdBidEmployee(employeeId);
+        User user = userService.findByEmail(byIdBidEmployee.getEmail()).orElse(null);
+        assert user != null;
+        user.setRole(byIdBidEmployee.getRole());
+
         Restaurant restaurant = restaurantRepo.findRestaurantByException(restaurantId);
+        bidRepo.delete(byIdBidEmployee);
         if (add.equalsIgnoreCase("add")) {
-            restaurant.getBidEmployees().add(byIdBidEmployee);
-            byIdBidEmployee.getRestaurant().add(restaurant);
+            restaurant.getUsers().add(user);
+            user.setRestaurant(restaurant);
             restaurant.setNumberOrEmployees(restaurant.getNumberOrEmployees() + 1);
             restaurantRepo.save(restaurant);
-            bidRepo.save(byIdBidEmployee);
+            userService.save(user);
             return "success add";
         }
-        bidRepo.delete(byIdBidEmployee);
+
         return "success remove";
     }
 }

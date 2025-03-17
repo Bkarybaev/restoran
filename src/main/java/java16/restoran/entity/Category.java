@@ -1,6 +1,7 @@
 package java16.restoran.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,8 @@ public class Category {
     @GeneratedValue(generator = "gen_category", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "gen_category", allocationSize = 1,initialValue = 100)
     private Long id;
+
+    @NotBlank
     private String name;
 
     //relationships

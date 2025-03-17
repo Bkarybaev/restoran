@@ -11,4 +11,6 @@ public interface UserService {
     ResponseEntity<?> login(LoginRequest loginRequest);
 
     ResponseEntity<?> register(RegisterRequest registerRequest);
+
+    void save(User user);
 }
