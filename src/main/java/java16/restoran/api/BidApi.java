@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import java16.restoran.dto.request.BidRequest;
 import java16.restoran.service.BidService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,6 +14,7 @@ public class BidApi {
     private final BidService bidService;
 
     //save
+    @Secured("CLIENT")
     @PostMapping("/saveBid/{id}")
     public String saveBid(@RequestBody @Valid BidRequest bidRequest,
                           @PathVariable Long id) {
@@ -20,6 +22,7 @@ public class BidApi {
     }
 
     //add employ
+    @Secured("ADMIN")
     @PostMapping("/saveEmployee/{id}/{restaurantId}")
     public String saveEmployee(@PathVariable Long id,
                                @RequestParam String add,

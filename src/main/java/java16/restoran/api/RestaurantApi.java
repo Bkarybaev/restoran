@@ -5,6 +5,7 @@ import java16.restoran.dto.request.RestaurantRequest;
 import java16.restoran.service.impl.RestaurantServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -15,11 +16,13 @@ public class RestaurantApi {
 
     /// crud method
     //creat
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<?> saveRestaurant(@RequestBody @Valid RestaurantRequest restaurant) {
         return restaurantService.save(restaurant);
     }
     //update
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateRestaurant(
             @PathVariable Long id,
@@ -28,12 +31,14 @@ public class RestaurantApi {
     }
 
     //get by id
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT')")
     @GetMapping("/get/{id}")
     public ResponseEntity<?> getRestaurant(@PathVariable Long id) {
         return restaurantService.getById(id);
     }
 
     //delete by id
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public String deleteRestaurant(@PathVariable Long id) {
         return restaurantService.delete(id);

@@ -26,7 +26,7 @@ public class Category {
     private String name;
 
     //relationships
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category",cascade = CascadeType.REMOVE)
     private List<SubCategory> subCategories = new ArrayList<>();
 }
 

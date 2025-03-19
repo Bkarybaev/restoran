@@ -1,6 +1,7 @@
 package java16.restoran.service.impl;
 
 import jakarta.transaction.Transactional;
+import java16.restoran.dto.response.CategoryResponse;
 import java16.restoran.entity.Category;
 import java16.restoran.exceptions.NotFount;
 import java16.restoran.repo.CategoryRepo;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -30,9 +32,17 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getAll() {
-        return categoryRepo.findAll();
+    public List<CategoryResponse> getAll() {
+        return categoryRepo.findAll().stream()
+                .map(category -> {
+                    CategoryResponse response = new CategoryResponse();
+                    response.setCategoryId(category.getId());
+                    response.setName(category.getName()); 
+                    return response;
+                })
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public String update(Long id, String categoryName) {

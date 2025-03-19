@@ -94,11 +94,9 @@ public class BidServiceImpl implements BidService {
         BidEmployees byIdBidEmployee = bidRepo.findByIdBidEmployee(employeeId);
         User user = userService.findByEmail(byIdBidEmployee.getEmail()).orElse(null);
         assert user != null;
-        user.setRole(byIdBidEmployee.getRole());
-
         Restaurant restaurant = restaurantRepo.findRestaurantByException(restaurantId);
-        bidRepo.delete(byIdBidEmployee);
         if (add.equalsIgnoreCase("add")) {
+            user.setRole(byIdBidEmployee.getRole());
             restaurant.getUsers().add(user);
             user.setRestaurant(restaurant);
             restaurant.setNumberOrEmployees(restaurant.getNumberOrEmployees() + 1);
@@ -106,6 +104,7 @@ public class BidServiceImpl implements BidService {
             userService.save(user);
             return "success add";
         }
+        bidRepo.delete(byIdBidEmployee);
 
         return "success remove";
     }

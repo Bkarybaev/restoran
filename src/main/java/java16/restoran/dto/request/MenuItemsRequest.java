@@ -1,5 +1,7 @@
 package java16.restoran.dto.request;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -10,10 +12,6 @@ public class MenuItemsRequest {
     private Boolean isVegetarian;
     private String name;
     private String description;
-
-//    private Long categoryId;
-//    private Long subcategoryId;
-
-
-
+    private Long restaurantId;
+    private Long subcategoryId;
 }

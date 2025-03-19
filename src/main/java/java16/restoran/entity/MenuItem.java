@@ -32,14 +32,12 @@ public class MenuItem {
     private String image;
 
     //relationships
-    @ManyToOne
-    private User restouranUser;
 
     @ManyToMany(mappedBy = "menuItems")
     private List<Cheque> chequeList= new ArrayList<>();
 
-    @OneToOne
-    private User stopListUser;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    private StopList stopList;
 
     @ManyToOne
     private SubCategory subCategory;

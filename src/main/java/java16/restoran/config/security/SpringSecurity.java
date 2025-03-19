@@ -31,13 +31,12 @@ public class SpringSecurity {
                 authorize
                         .requestMatchers(
                                 "/**",
-//                                "/api/menu/saveMenuItem",
                                 "/api/auth/login",
                                 "/api/auth/register",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
-                        .anyRequest().authenticated());
+                        .anyRequest().permitAll());
         http.csrf(AbstractHttpConfigurer::disable);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
