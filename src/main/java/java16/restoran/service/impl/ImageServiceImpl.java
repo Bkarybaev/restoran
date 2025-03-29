@@ -21,6 +21,7 @@ public class ImageServiceImpl implements ImageService {
     public String save(MultipartFile file) throws IOException {
 
         //unig
+
         String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 
         // put tuzup beret
