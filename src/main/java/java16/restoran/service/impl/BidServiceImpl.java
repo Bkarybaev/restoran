@@ -105,7 +105,6 @@ public class BidServiceImpl implements BidService {
             return "success add";
         }
         bidRepo.delete(byIdBidEmployee);
-
         return "success remove";
     }
 }
