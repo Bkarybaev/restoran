@@ -83,8 +83,6 @@ public class BidServiceImpl implements BidService {
         bidEmployees.setFirstName(bidRequest.getFirstName());
         bidEmployees.setPhone(bidRequest.getPhone());
         bidRepo.save(bidEmployees);
-
-
         return "success";
     }
 
